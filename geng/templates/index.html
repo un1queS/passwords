@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор паролей</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Генератор паролей</h1>
+        
+        <div class="settings">
+            <div class="setting-group">
+                <label for="length">Длина пароля:</label>
+                <input type="number" id="length" min="4" max="50" value="12" class="no-spinner">
+            </div>
+            
+            <div class="setting-group">
+                <label>
+                    <input type="checkbox" id="uppercase" checked>
+                    Заглавные буквы (A-Z)
+                </label>
+            </div>
+            
+            <div class="setting-group">
+                <label>
+                    <input type="checkbox" id="lowercase" checked>
+                    Строчные буквы (a-z)
+                </label>
+            </div>
+            
+            <div class="setting-group">
+                <label>
+                    <input type="checkbox" id="numbers" checked>
+                    Цифры (0-9)
+                </label>
+            </div>
+            
+            <div class="setting-group">
+                <label>
+                    <input type="checkbox" id="special">
+                    Специальные символы (!@#$% и т.д.)
+                </label>
+            </div>
+        </div>
+        
+        <button id="generate-btn">Сгенерировать пароль</button>
+        
+        <div class="result">
+            <input type="text" id="password-output" readonly>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('generate-btn').addEventListener('click', function() {
+            const length = document.getElementById('length').value;
+            const uppercase = document.getElementById('uppercase').checked;
+            const lowercase = document.getElementById('lowercase').checked;
+            const numbers = document.getElementById('numbers').checked;
+            const special = document.getElementById('special').checked;
+            
+            fetch('/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `length=${length}&uppercase=${uppercase}&lowercase=${lowercase}&numbers=${numbers}&special=${special}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.password) {
+                    document.getElementById('password-output').value = data.password;
+                    updatePasswordStrength(data.password);
+                } else {
+                    alert('Ошибка: ' + data.error);
+                }
+            })
+            .catch(error => {
+                alert('Ошибка: ' + error);
+            });
+        });
+        
+        function updatePasswordStrength(password) {
+            const strengthBar = document.getElementById('strength-bar');
+            const strengthText = document.getElementById('strength-text');
+            
+            let strength = 0;
+            let feedback = '';
+            
+            if (password.length >= 8) strength += 25;
+            if (password.length >= 12) strength += 25;
+            
+            if (/[a-z]/.test(password)) strength += 10;
+            if (/[A-Z]/.test(password)) strength += 15;
+            if (/[0-9]/.test(password)) strength += 15;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 20;
+        }
+    </script>
+</body>
+</html>
