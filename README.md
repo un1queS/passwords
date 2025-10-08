@@ -39,6 +39,6 @@ password-generator/
 │   └── style.css      # Стили
 └── README.md
 ```
-
+Скриншот сайта
 <img width="729" height="837" alt="image" src="https://github.com/user-attachments/assets/4c5fd6d8-5889-45fb-9b89-a2b3095f517a" />
 
