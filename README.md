@@ -1,12 +1,10 @@
-Генератор паролей
-
 Простой генератор паролей на Flask.
 
 Установка и запуск
 
 ```bash
 # Клонировать репозиторий
-git clone https://github.com/your-username/password-generator.git
+git clone https://github.com/un1queS/passwords.git
 cd password-generator
 
 # Установить зависимости
