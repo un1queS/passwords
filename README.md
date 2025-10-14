@@ -34,9 +34,11 @@ python app.py
 password-generator/
 ├── app.py              # Flask приложение
 ├── templates/
-│   └── index.html     # HTML шаблон
+│   └── index.html      # HTML шаблоны
+│   └── login.html
+│   └── register.html
 ├── static/
-│   └── style.css      # Стили
+│   └── style.css       # Стили
 └── README.md
 ```
 Скриншот сайта
