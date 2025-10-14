@@ -9,7 +9,6 @@ USERS_FILE = 'users.txt'
 PASSWORDS_FILE = 'saved_passwords.txt'
 
 def load_users():
-    """Загружает пользователей из txt файла"""
     users = {}
     if os.path.exists(USERS_FILE):
         with open(USERS_FILE, 'r', encoding='utf-8') as f:
@@ -26,18 +25,15 @@ def load_users():
     return users
 
 def save_users(users):
-    """Сохраняет пользователей в txt файл"""
     with open(USERS_FILE, 'w', encoding='utf-8') as f:
         for username, data in users.items():
             f.write(f"{username}:{data['password']}\n")
 
 def save_password_to_file(password, username):
-    """Сохраняет пароль в txt файл"""
     with open(PASSWORDS_FILE, 'a', encoding='utf-8') as f:
         f.write(f"{username}: {password}\n")
 
 def login_required(f):
-    """Декоратор для проверки авторизации"""
     def decorated_function(*args, **kwargs):
         if 'user_id' not in session:
             return redirect(url_for('login'))
