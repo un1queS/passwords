@@ -113,11 +113,6 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        confirm_password = request.form['confirm_password']
-        
-        if password != confirm_password:
-            flash('Пароли не совпадают')
-            return render_template('register.html')
         
         users = load_users()
         if username in users:
@@ -148,4 +143,4 @@ def save_password():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host = '0.0.0.0' , port = 2222)
