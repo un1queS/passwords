@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор паролей</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Генератор паролей</h1>
+        
+        <form method="POST">
+            <div class="settings">
+                <div class="setting-group">
+                    <label><strong>Длина пароля:</strong></label>
+                    <div class="length-input">
+                        <input type="text" name="length" value="12" pattern="[0-9]*" class="no-spinner">
+                    </div>
+                </div>
+                
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" name="uppercase">
+                        Заглавные буквы (A-Z)
+                    </label>
+                </div>
+                
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" name="lowercase" checked>
+                        Строчные буквы (a-z)
+                    </label>
+                </div>
+                
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" name="numbers" checked>
+                        Цифры (0-9)
+                    </label>
+                </div>
+                
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" name="special">
+                        Специальные символы (!@#$% и т.д.)
+                    </label>
+                </div>
+            </div>
+            
+            <hr class="divider">
+            
+            <button type="submit" class="generate-btn">
+                Сгенерировать пароль
+            </button>
+        </form>
+        
+        {% if password %}
+        <div class="result">
+            <div class="password-output">
+                {{ password }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
