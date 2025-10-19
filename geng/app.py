@@ -65,7 +65,6 @@ def delete_saved_password(username, site, password):
                 if len(parts) >= 3:
                     file_username, file_site, file_password = parts[0], parts[1], parts[2]
                     print(f"DEBUG: Processing line: username='{file_username}', site='{file_site}', password='{file_password}'")
-                    # Нормализуем пустые строки для корректного сравнения
                     file_site = file_site if file_site else ""
                     site = site if site else ""
                     print(f"DEBUG: After normalization: file_site='{file_site}', site='{site}'")
@@ -191,12 +190,13 @@ def save_password():
 @app.route('/delete_password', methods=['POST'])
 @login_required
 def delete_password():
-    site = request.form.get('site', '')  # Устанавливаем пустую строку по умолчанию
+    site = request.form.get('site', '')
     password = request.form.get('password')
     print(f"DEBUG: Deleting password for user {session['username']}, site='{site}', password='{password}'")
-    if password:  # Убираем проверку на site, так как он может быть пустым
+    if password:
         delete_saved_password(session['username'], site, password)
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
+
     app.run(debug=True, host = '0.0.0.0' , port = 2222)
