@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор паролей</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        {% if session.user_id %}
+        <div class="user-info">
+            <span>Добро пожаловать, {{ session.username }}!</span>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Выйти</a>
+        </div>
+        {% endif %}
+        
+        <div class="main-container">
+            <h1>Генератор паролей</h1>
+            <div class="content-wrapper">
+                <div class="generator-section">
+                    <form method="POST">
+                        <div class="settings">
+                            <div class="setting-group">
+                                <label><strong>Длина пароля:</strong></label>
+                                <div class="length-input">
+                                    <input type="text" name="length" value="12" pattern="[0-9]*" class="no-spinner">
+                                </div>
+                            </div>
+                            <div class="setting-group">
+                                <label>
+                                    <input type="checkbox" name="uppercase">
+                                    Заглавные буквы (A-Z)
+                                </label>
+                            </div>
+                            <div class="setting-group">
+                                <label>
+                                    <input type="checkbox" name="lowercase" checked>
+                                    Строчные буквы (a-z)
+                                </label>
+                            </div>
+                            
+                            <div class="setting-group">
+                                <label>
+                                    <input type="checkbox" name="numbers" checked>
+                                    Цифры (0-9)
+                                </label>
+                            </div>
+                            
+                            <div class="setting-group">
+                                <label>
+                                    <input type="checkbox" name="special">
+                                    Специальные символы (!@#$% и т.д.)
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <hr class="divider">
+                        
+                        <button type="submit" class="generate-btn">
+                            Сгенерировать пароль
+                        </button>
+                    </form>
+                    
+                    {% if password %}
+                    <div class="result">
+                        <div class="password-output" id="password-output">
+                            {{ password }}
+                        </div>
+                        <div class="password-actions">
+                            <form method="POST" action="{{ url_for('save_password') }}" style="display: inline;">
+                                <input type="hidden" name="password" value="{{ password }}">
+                                <div class="save-form">
+                                    <input type="text" name="site" placeholder="Название сайта (необязательно)" class="site-input">
+                                    <button type="submit" class="save-btn">Сохранить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                {% if saved_passwords %}
+                <div class="saved-passwords">
+                    <h2>Сохраненные пароли</h2>
+                    <div class="passwords-list">
+                        {% for pwd in saved_passwords %}
+                        <div class="password-item">
+                            <div class="password-info">
+                                <span class="site-name">{{ pwd.site if pwd.site else 'Без названия' }}</span>
+                                <span class="password-text">{{ pwd.password }}</span>
+                            </div>
+                            <form method="POST" action="{{ url_for('delete_password') }}" style="display: inline;">
+                                <input type="hidden" name="site" value="{{ pwd.site }}">
+                                <input type="hidden" name="password" value="{{ pwd.password }}">
+                                <button type="submit" class="delete-btn" onclick="return confirm('Удалить этот пароль?')">Удалить</button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
