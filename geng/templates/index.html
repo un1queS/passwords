@@ -71,7 +71,8 @@
                             <form method="POST" action="{{ url_for('save_password') }}" style="display: inline;">
                                 <input type="hidden" name="password" value="{{ password }}">
                                 <div class="save-form">
-                                    <input type="text" name="site" placeholder="Название сайта (необязательно)" class="site-input">
+                                    <input type="text" name="site" placeholder="Имя сайта" class="site-input">
+                                    <input type="text" name="login" placeholder="Логин" class="login-input" required>
                                     <button type="submit" class="save-btn">Сохранить</button>
                                 </div>
                             </form>
@@ -88,10 +89,14 @@
                         <div class="password-item">
                             <div class="password-info">
                                 <span class="site-name">{{ pwd.site if pwd.site else 'Без названия' }}</span>
+                                {% if pwd.login %}
+                                <span class="login-text">Логин: {{ pwd.login }}</span>
+                                {% endif %}
                                 <span class="password-text">{{ pwd.password }}</span>
                             </div>
                             <form method="POST" action="{{ url_for('delete_password') }}" style="display: inline;">
                                 <input type="hidden" name="site" value="{{ pwd.site }}">
+                                <input type="hidden" name="login" value="{{ pwd.login }}">
                                 <input type="hidden" name="password" value="{{ pwd.password }}">
                                 <button type="submit" class="delete-btn" onclick="return confirm('Удалить этот пароль?')">Удалить</button>
                             </form>
