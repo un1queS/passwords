@@ -7,7 +7,6 @@ import sqlite3
 app = Flask(__name__)
 app.secret_key = 'secret-key'  
 
-# SQLite database configuration (absolute path to keep DB in this folder)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE = os.path.join(BASE_DIR, 'app.db')
 
@@ -211,7 +210,7 @@ def save_password():
 @app.route('/delete_password', methods=['POST'])
 @login_required
 def delete_password():
-    site = request.form.get('site', '')  # Устанавливаем пустую строку по умолчанию
+    site = request.form.get('site', '') 
     password = request.form.get('password')
     login = request.form.get('login', '')
     print(f"DEBUG: Deleting password for user {session['username']}, site='{site}', login='{login}', password='{password}'")
